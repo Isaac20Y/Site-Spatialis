@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spatialis | Inteligência Geográfica & Geotecnologias</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+          },
+          colors: {
+            spatialis: {
+              navy: '#14233C',
+              deep: '#0E1829',
+              teal: '#1E5A5F',
+              emerald: '#3CA078',
+              sand: '#F5F7F8',
+              slate: '#334155'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .topo-pattern {
+      background-color: #14233C;
+      background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 Q 100 50, 200 100 T 400 100 M0 200 Q 120 140, 220 200 T 400 200 M0 300 Q 80 250, 180 300 T 400 300 M50 0 Q 100 100, 50 200 T 50 400 M250 0 Q 200 120, 250 220 T 250 400' fill='none' stroke='%233CA078' stroke-width='0.8' stroke-opacity='0.14'/%3E%3C/svg%3E");
+    }
+    .topo-light {
+      background-color: #F5F7F8;
+      background-image: url("data:image/svg+xml,%3Csvg width='300' height='300' viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 75 Q 75 35, 150 75 T 300 75 M0 150 Q 90 105, 165 150 T 300 150 M0 225 Q 60 185, 135 225 T 300 225' fill='none' stroke='%231E5A5F' stroke-width='0.6' stroke-opacity='0.07'/%3E%3C/svg%3E");
+    }
+  </style>
+</head>
+<body class="bg-spatialis-sand text-slate-800 font-sans antialiased selection:bg-spatialis-emerald selection:text-white">
+
+  <!-- Navbar -->
+  <header class="fixed w-full top-0 z-50 bg-spatialis-navy/95 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <a href="#inicio" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-spatialis-teal to-spatialis-emerald flex items-center justify-center shadow-lg group-hover:scale-105 transition">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="font-display font-bold text-xl tracking-wide text-white block leading-none">SPATIALIS</span>
+          <span class="text-[11px] uppercase tracking-widest text-spatialis-emerald font-medium">Inteligência Geográfica</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-200">
+        <a href="#sobre" class="hover:text-spatialis-emerald transition">A Empresa</a>
+        <a href="#solucoes" class="hover:text-spatialis-emerald transition">Produtos & Serviços</a>
+        <a href="#geoportal" class="hover:text-spatialis-emerald transition">Geoportal WebGIS</a>
+        <a href="#objetivos" class="hover:text-spatialis-emerald transition">Objetivos</a>
+        <a href="#contato" class="px-5 py-2.5 rounded-lg bg-spatialis-emerald hover:bg-emerald-500 text-spatialis-deep font-semibold transition shadow-md">
+          Solicitar Diagnóstico
+        </a>
+      </nav>
+
+      <button id="mobile-menu-btn" class="md:hidden text-white p-2 rounded-lg hover:bg-white/10" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-spatialis-deep border-b border-white/10 px-6 py-4 space-y-3 text-sm text-slate-200">
+      <a href="#sobre" class="block py-1.5 hover:text-spatialis-emerald">A Empresa</a>
+      <a href="#solucoes" class="block py-1.5 hover:text-spatialis-emerald">Produtos & Serviços</a>
+      <a href="#geoportal" class="block py-1.5 hover:text-spatialis-emerald">Geoportal WebGIS</a>
+      <a href="#objetivos" class="block py-1.5 hover:text-spatialis-emerald">Objetivos</a>
+      <a href="#contato" class="block py-2 text-center rounded-lg bg-spatialis-emerald text-spatialis-deep font-semibold">Solicitar Diagnóstico</a>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="inicio" class="topo-pattern pt-32 pb-24 lg:pt-40 lg:pb-32 text-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-spatialis-teal/40 border border-spatialis-emerald/30 text-spatialis-emerald text-xs font-semibold uppercase tracking-wider">
+            <span class="w-2 h-2 rounded-full bg-spatialis-emerald animate-pulse"></span>
+            Geotecnologias • Cartografia • Inteligência Espacial
+          </div>
+          <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight">
+            Transformamos dados territoriais em <span class="text-spatialis-emerald">decisões estratégicas.</span>
+          </h1>
+          <p class="text-lg text-slate-300 leading-relaxed max-w-2xl">
+            Unimos sensoriamento remoto, Sistemas de Informação Geográfica (SIG) e engenharia cartográfica para suprir a carência de dados georreferenciados em prefeituras, construtoras, propriedades rurais e empreendimentos ambientais.
+          </p>
+          <div class="flex flex-wrap gap-4 pt-2">
+            <a href="#solucoes" class="px-6 py-3.5 rounded-lg bg-spatialis-emerald hover:bg-emerald-400 text-spatialis-deep font-bold transition shadow-lg">
+              Explorar Produtos & Serviços
+            </a>
+            <a href="#geoportal" class="px-6 py-3.5 rounded-lg bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold transition">
+              Conhecer Geoportal WebGIS
+            </a>
+          </div>
+        </div>
+
+        <!-- Visual Card -->
+        <div class="lg:col-span-5">
+          <div class="bg-spatialis-deep/90 border border-white/15 rounded-2xl p-6 shadow-2xl backdrop-blur-sm space-y-5">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+              <div>
+                <p class="text-xs uppercase tracking-wider text-spatialis-emerald font-semibold">Monitoramento Territorial</p>
+                <h3 class="font-display text-lg font-bold text-white">Camadas de Inteligência</h3>
+              </div>
+              <span class="px-2.5 py-1 text-xs rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">RTK & SIG</span>
+            </div>
+
+            <div class="space-y-3 text-sm">
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-spatialis-teal/50 text-spatialis-emerald flex items-center justify-center shrink-0 font-bold">01</div>
+                <div>
+                  <p class="font-semibold text-white">Webportais (Geoportais)</p>
+                  <p class="text-slate-400 text-xs mt-0.5">Consulta espacial em nuvem e gestão cadastral em tempo real.</p>
+                </div>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-spatialis-teal/50 text-spatialis-emerald flex items-center justify-center shrink-0 font-bold">02</div>
+                <div>
+                  <p class="font-semibold text-white">Produtos Cartográficos de Precisão</p>
+                  <p class="text-slate-400 text-xs mt-0.5">Ortofotos de drone, plantas topográficas e georreferenciamento.</p>
+                </div>
+              </div>
+              <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-spatialis-teal/50 text-spatialis-emerald flex items-center justify-center shrink-0 font-bold">03</div>
+                <div>
+                  <p class="font-semibold text-white">Cartas de Risco Geotécnico & Ambiental</p>
+                  <p class="text-slate-400 text-xs mt-0.5">Prevenção de desastres, declividade e vulnerabilidade hídrica.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre / O Problema que Resolvemos -->
+  <section id="sobre" class="py-20 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center space-y-4 mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-spatialis-teal">Por que a Spatialis existe</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-spatialis-navy">
+          Superando a carência de dados georreferenciados no setor público e privado
+        </h2>
+        <p class="text-slate-600 leading-relaxed">
+          Muitas prefeituras e organizações ainda operam com mapas físicos desatualizados e bases cadastrais fragmentadas. A Spatialis converte dados brutos de campo, satélite e drone em inteligência territorial acessível.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="p-7 rounded-2xl bg-spatialis-sand border border-slate-200/80">
+          <div class="w-12 h-12 rounded-xl bg-spatialis-navy text-spatialis-emerald flex items-center justify-center mb-5">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Gestão Pública Inteligente</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Apoio a prefeituras, secretarias de planejamento e Defesa Civil com Cadastro Técnico Multifinalitário (CTM) e mapeamento preventivo de áreas vulneráveis.
+          </p>
+        </div>
+
+        <div class="p-7 rounded-2xl bg-spatialis-sand border border-slate-200/80">
+          <div class="w-12 h-12 rounded-xl bg-spatialis-navy text-spatialis-emerald flex items-center justify-center mb-5">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Segurança Jurídica & Ambiental</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Georreferenciamento de imóveis rurais, regularização ambiental (CAR) e estudos topográficos rigorosos para construtoras, loteamentos e mineradoras.
+          </p>
+        </div>
+
+        <div class="p-7 rounded-2xl bg-spatialis-sand border border-slate-200/80">
+          <div class="w-12 h-12 rounded-xl bg-spatialis-navy text-spatialis-emerald flex items-center justify-center mb-5">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/>
+            </svg>
+          </div>
+          <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Tecnologia Aberta & Escalável</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Arquitetura híbrida combinando equipamentos GNSS RTK e drones de alta precisão com ecossistema SIG aberto (QGIS, PostGIS e GeoServer), garantindo excelente custo-benefício.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Produtos & Serviços (com filtro interativo) -->
+  <section id="solucoes" class="py-20 topo-light">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-spatialis-teal">Portfólio Técnico</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-spatialis-navy mt-1">Produtos & Serviços</h2>
+        </div>
+
+        <!-- Tabs Filter -->
+        <div class="inline-flex rounded-xl bg-white p-1.5 border border-slate-200 shadow-sm self-start">
+          <button onclick="filterPortfolio('todos')" id="tab-todos" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold bg-spatialis-navy text-white transition">
+            Todos
+          </button>
+          <button onclick="filterPortfolio('produtos')" id="tab-produtos" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-spatialis-navy transition">
+            Produtos Cartográficos
+          </button>
+          <button onclick="filterPortfolio('servicos')" id="tab-servicos" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-spatialis-navy transition">
+            Serviços & Consultoria
+          </button>
+        </div>
+      </div>
+
+      <div id="portfolio-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <!-- Card 1 -->
+        <div data-category="produtos" class="portfolio-card bg-white rounded-2xl p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-spatialis-teal mb-4">Produto Digital</span>
+            <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Webportais (Geoportais WebGIS)</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Plataformas geográficas interativas hospedadas em nuvem para consulta de lotes, zoneamento urbano, infraestrutura e indicadores ambientais sem necessidade de softwares locais.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-medium text-spatialis-teal">
+            Público: Prefeituras, Imobiliárias & Concessionárias
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div data-category="produtos" class="portfolio-card bg-white rounded-2xl p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-spatialis-teal mb-4">Produto Técnico</span>
+            <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Cartas de Risco Geotécnico & Ambiental</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Mapeamentos especializados de suscetibilidade a inundações, deslizamentos, erosão e vulnerabilidade ambiental para prevenção de desastres e planos diretores.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-medium text-spatialis-teal">
+            Público: Defesa Civil, Órgãos Ambientais & Obras
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div data-category="produtos" class="portfolio-card bg-white rounded-2xl p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-spatialis-teal mb-4">Produto Cartográfico</span>
+            <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Mapas Temáticos & Bases Geoespaciais</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Cartas topográficas, hipsometria, declividade, uso e cobertura do solo, além de bancos de dados geográficos estruturados (PostGIS) prontos para análise.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-medium text-spatialis-teal">
+            Público: Consultorias, Pesquisadores & Setor Público
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div data-category="servicos" class="portfolio-card bg-white rounded-2xl p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 text-spatialis-navy mb-4">Serviço de Campo</span>
+            <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Aerofotogrametria com Drones</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Levantamento aéreo de alta resolução para geração de ortomosaicos georreferenciados, Modelos Digitais de Terreno (MDT), Modelos de Superfície (MDS) e curvas de nível.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-medium text-spatialis-navy">
+            Público: Construtoras, Loteamentos & Mineração
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div data-category="servicos" class="portfolio-card bg-white rounded-2xl p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 text-spatialis-navy mb-4">Serviço Cadastral</span>
+            <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Georreferenciamento & Regularização</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Levantamento topográfico com receptores GNSS RTK de precisão centimétrica, georreferenciamento de imóveis rurais e elaboração de Cadastro Ambiental Rural (CAR).
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-medium text-spatialis-navy">
+            Público: Propriedades Rurais & Mercado Imobiliário
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div data-category="servicos" class="portfolio-card bg-white rounded-2xl p-7 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+          <div>
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-sky-50 text-spatialis-navy mb-4">Consultoria Estratégica</span>
+            <h3 class="font-display text-xl font-bold text-spatialis-navy mb-2">Geomarketing & Inteligência Locacional</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Cruzamento de dados socioeconômicos, demográficos e de fluxo urbano para orientar a expansão de clínicas, hospitais, redes varejistas e empreendimentos imobiliários.
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-slate-100 text-xs font-medium text-spatialis-navy">
+            Público: Hospitais, Clínicas, Varejo & Incorporadoras
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prévia Interativa do Geoportal -->
+  <section id="geoportal" class="py-20 bg-spatialis-navy text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-5 space-y-5">
+          <span class="text-xs font-bold uppercase tracking-widest text-spatialis-emerald">Tecnologia WebGIS</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold">
+            Simulador de Camadas do Geoportal Spatialis
+          </h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Clique nos setores abaixo para visualizar como gestores públicos e privados inspecionam diagnósticos territoriais em tempo real diretamente pelo navegador.
+          </p>
+
+          <div class="space-y-2.5 pt-2">
+            <button onclick="selectZone('risco')" id="btn-zone-risco" class="zone-btn w-full text-left p-4 rounded-xl bg-spatialis-teal/40 border border-spatialis-emerald text-white transition flex items-center justify-between">
+              <div>
+                <p class="font-semibold text-sm">Setor 01 • Carta de Risco Hidrológico</p>
+                <p class="text-xs text-slate-300">Planície fluvial e suscetibilidade a alagamentos</p>
+              </div>
+              <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+            </button>
+
+            <button onclick="selectZone('urbano')" id="btn-zone-urbano" class="zone-btn w-full text-left p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 text-white transition flex items-center justify-between">
+              <div>
+                <p class="font-semibold text-sm">Setor 02 • Cadastro Técnico Urbano (CTM)</p>
+                <p class="text-xs text-slate-300">Zoneamento, lotes e potencial construtivo</p>
+              </div>
+              <span class="w-3 h-3 rounded-full bg-sky-400"></span>
+            </button>
+
+            <button onclick="selectZone('rural')" id="btn-zone-rural" class="zone-btn w-full text-left p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 text-white transition flex items-center justify-between">
+              <div>
+                <p class="font-semibold text-sm">Setor 03 • Monitoramento Ambiental & CAR</p>
+                <p class="text-xs text-slate-300">Áreas de Preservação Permanente (APP) e uso do solo</p>
+              </div>
+              <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Diagnostic Panel -->
+        <div class="lg:col-span-7">
+          <div class="bg-spatialis-deep border border-white/15 rounded-2xl overflow-hidden shadow-2xl">
+            <div class="bg-black/30 px-6 py-3.5 border-b border-white/10 flex items-center justify-between text-xs text-slate-400">
+              <span class="font-mono">geoportal.spatialis.com.br/visor-sig</span>
+              <span class="text-spatialis-emerald font-semibold">SIRGAS 2000 / UTM 24S</span>
+            </div>
+
+            <div class="p-6 sm:p-8 space-y-6">
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <div>
+                  <span id="zone-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                    ALERTA GEOTÉCNICO ALTO
+                  </span>
+                  <h3 id="zone-title" class="font-display text-2xl font-bold text-white mt-2">
+                    Carta de Risco Hidrológico • Bacia Urbana
+                  </h3>
+                </div>
+                <div class="text-right">
+                  <p class="text-xs text-slate-400">Área Mapeada</p>
+                  <p id="zone-area" class="font-display text-xl font-bold text-spatialis-emerald">142,8 ha</p>
+                </div>
+              </div>
+
+              <p id="zone-desc" class="text-sm text-slate-300 leading-relaxed">
+                Identificação de áreas de baixa declividade (inferior a 2%) adjacentes ao canal principal, com alta impermeabilização do solo e histórico de alagamento sazonal. Recomendada intervenção de drenagem e restrição de parcelamento.
+              </p>
+
+              <div class="grid sm:grid-cols-3 gap-4 pt-2">
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <p class="text-xs text-slate-400">Precisão Planimétrica</p>
+                  <p id="zone-prec" class="font-display text-lg font-bold text-white mt-1">± 3,5 cm (RTK)</p>
+                </div>
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <p class="text-xs text-slate-400">Sensor / Fonte</p>
+                  <p id="zone-sensor" class="font-display text-lg font-bold text-white mt-1">Drone + MDT LiDAR</p>
+                </div>
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <p class="text-xs text-slate-400">Entregável Principal</p>
+                  <p id="zone-deliver" class="font-display text-lg font-bold text-spatialis-emerald mt-1">Carta de Risco + SIG</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Objetivos Estratégicos -->
+  <section id="objetivos" class="py-20 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl mx-auto text-center space-y-3 mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-spatialis-teal">Diretrizes & Futuro</span>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold text-spatialis-navy">Nossos Objetivos</h2>
+        <p class="text-slate-600 text-sm sm:text-base">
+          Compromissos que orientam a atuação técnica, ambiental e tecnológica da Spatialis Inteligência Geográfica.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="p-6 rounded-2xl border border-slate-200 bg-spatialis-sand/60 space-y-3">
+          <span class="font-display text-3xl font-bold text-spatialis-emerald">01</span>
+          <h3 class="font-display text-lg font-bold text-spatialis-navy">Democratizar o Acesso ao SIG</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Entregar plataformas WebGIS intuitivas para que municípios de pequeno e médio porte modernizem sua gestão territorial sem custos proibitivos.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-spatialis-sand/60 space-y-3">
+          <span class="font-display text-3xl font-bold text-spatialis-emerald">02</span>
+          <h3 class="font-display text-lg font-bold text-spatialis-navy">Prevenir Riscos Ambientais</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Expandir a elaboração de Cartas de Risco geotécnicas e hidrológicas, auxiliando a Defesa Civil e empreendimentos na mitigação de desastres climáticos.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-spatialis-sand/60 space-y-3">
+          <span class="font-display text-3xl font-bold text-spatialis-emerald">03</span>
+          <h3 class="font-display text-lg font-bold text-spatialis-navy">Excelência & Rigor Cartográfico</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Garantir acurácia geométrica e conformidade normativa (INCRA, ABNT, IBGE) em todos os levantamentos topográficos e produtos cartográficos entregues.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl border border-slate-200 bg-spatialis-sand/60 space-y-3">
+          <span class="font-display text-3xl font-bold text-spatialis-emerald">04</span>
+          <h3 class="font-display text-lg font-bold text-spatialis-navy">Inovação em Inteligência Espacial</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Integrar sensoriamento remoto orbital, aerofotogrametria e análise espacial automatizada para apoiar o desenvolvimento sustentável regional.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contato / Diagnóstico -->
+  <section id="contato" class="py-20 topo-light">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden grid md:grid-cols-5">
+        <div class="md:col-span-2 bg-spatialis-navy text-white p-8 flex flex-col justify-between">
+          <div class="space-y-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-spatialis-emerald">Fale Conosco</span>
+            <h3 class="font-display text-2xl font-bold">Solicite uma Proposta Técnica</h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Precisa de mapeamento com drone, georreferenciamento, carta de risco ou um geoportal para o seu município ou empresa?
+            </p>
+          </div>
+          <div class="space-y-2 text-xs text-slate-300 pt-8 border-t border-white/10">
+            <p><strong class="text-white">Atuação:</strong> Setor Público (B2G) & Privado (B2B)</p>
+            <p><strong class="text-white">Base Operacional:</strong> Ceará • Brasil</p>
+          </div>
+        </div>
+
+        <form id="contact-form" class="md:col-span-3 p-8 space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Nome / Instituição</label>
+            <input type="text" required placeholder="Ex: Secretaria de Obras / Construtora Horizonte" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:border-spatialis-teal" />
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">E-mail Corporativo</label>
+              <input type="email" required placeholder="contato@organizacao.com.br" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:border-spatialis-teal" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Solução de Interesse</label>
+              <select class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:border-spatialis-teal bg-white">
+                <option>Produtos Cartográficos / Drone</option>
+                <option>Webportal (Geoportal WebGIS)</option>
+                <option>Carta de Risco Geotécnico / Ambiental</option>
+                <option>Georreferenciamento / CAR</option>
+                <option>Geomarketing & Análise Espacial</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Detalhes da Área ou Projeto</label>
+            <textarea rows="3" required placeholder="Descreva brevemente o município, tamanho aproximado da área ou objetivo do estudo..." class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:border-spatialis-teal"></textarea>
+          </div>
+          <button type="submit" class="w-full py-3 rounded-lg bg-spatialis-emerald hover:bg-emerald-500 text-spatialis-deep font-bold text-sm transition shadow-md">
+            Enviar Solicitação de Diagnóstico
+          </button>
+          <p id="form-feedback" class="hidden text-xs text-center font-semibold text-spatialis-teal pt-1">
+            Solicitação registrada! Nossa equipe técnica entrará em contato em breve.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-spatialis-deep text-slate-400 py-10 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-display font-bold text-white tracking-wide">SPATIALIS</span>
+        <span>• Inteligência Geográfica & Geotecnologias</span>
+      </div>
+      <p class="text-xs text-slate-500">© 2026 Spatialis Inteligência Geográfica. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Menu Toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    // Portfolio Filter
+    function filterPortfolio(category) {
+      document.querySelectorAll('.tab-btn').forEach(el => {
+        el.classList.remove('bg-spatialis-navy', 'text-white');
+        el.classList.add('text-slate-600');
+      });
+      const activeBtn = document.getElementById('tab-' + category);
+      activeBtn.classList.add('bg-spatialis-navy', 'text-white');
+      activeBtn.classList.remove('text-slate-600');
+
+      document.querySelectorAll('.portfolio-card').forEach(card => {
+        if (category === 'todos' || card.dataset.category === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Geoportal Zone Simulator
+    const zones = {
+      risco: {
+        badge: 'ALERTA GEOTÉCNICO ALTO',
+        badgeClass: 'px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30',
+        title: 'Carta de Risco Hidrológico • Bacia Urbana',
+        area: '142,8 ha',
+        desc: 'Identificação de áreas de baixa declividade (inferior a 2%) adjacentes ao canal principal, com alta impermeabilização do solo e histórico de alagamento sazonal. Recomendada intervenção de drenagem e restrição de parcelamento.',
+        prec: '± 3,5 cm (RTK)',
+        sensor: 'Drone + MDT LiDAR',
+        deliver: 'Carta de Risco + SIG'
+      },
+      urbano: {
+        badge: 'CADASTRO MULTIFINALITÁRIO',
+        badgeClass: 'px-3 py-1 rounded-full text-xs font-bold bg-sky-500/20 text-sky-300 border border-sky-500/30',
+        title: 'Cadastro Técnico Urbano • Zona de Expansão',
+        area: '318,4 ha',
+        desc: 'Atualização vetorial de 1.840 lotes urbanos, identificação de áreas construídas não declaradas, rede viária e zoneamento fiscal para modernização da base imobiliária municipal.',
+        prec: '± 5,0 cm (Ortofoto)',
+        sensor: 'Aerofotogrametria RGB',
+        deliver: 'WebGIS + Base PostGIS'
+      },
+      rural: {
+        badge: 'CONFORMIDADE AMBIENTAL',
+        badgeClass: 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
+        title: 'Georreferenciamento & CAR • Propriedade Rural',
+        area: '625,0 ha',
+        desc: 'Delimitação perimétrica certificável, mapeamento de Áreas de Preservação Permanente (APP), Reserva Legal e classificação de uso do solo por índices de vegetação.',
+        prec: '± 2,0 cm (GNSS RTK)',
+        sensor: 'GNSS RTK + Sentinel-2',
+        deliver: 'Planta + Memorial + CAR'
+      }
+    };
+
+    function selectZone(key) {
+      const z = zones[key];
+      document.querySelectorAll('.zone-btn').forEach(b => {
+        b.className = 'zone-btn w-full text-left p-4 rounded-xl bg-white/5 border border-white/10 hover:border-white/30 text-white transition flex items-center justify-between';
+      });
+      document.getElementById('btn-zone-' + key).className = 'zone-btn w-full text-left p-4 rounded-xl bg-spatialis-teal/40 border border-spatialis-emerald text-white transition flex items-center justify-between';
+
+      const badge = document.getElementById('zone-badge');
+      badge.textContent = z.badge;
+      badge.className = z.badgeClass;
+      document.getElementById('zone-title').textContent = z.title;
+      document.getElementById('zone-area').textContent = z.area;
+      document.getElementById('zone-desc').textContent = z.desc;
+      document.getElementById('zone-prec').textContent = z.prec;
+      document.getElementById('zone-sensor').textContent = z.sensor;
+      document.getElementById('zone-deliver').textContent = z.deliver;
+    }
+
+    // Form Submission Feedback
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('form-feedback').classList.remove('hidden');
+      this.reset();
+    });
+  </script>
+</body>
+</html>
